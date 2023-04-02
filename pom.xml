@@ -31,4 +31,12 @@
             <url>https://repo1.maven.org/maven2/</url>
         </repository>
     </repositories>
+
+    <distributionManagement>
+        <repository>
+        <id>github</id>
+        <name>GitHub Packages</name>
+        <url>https://maven.pkg.github.com/hendrikstill/kube-leader</url>
+        </repository>
+    </distributionManagement>
 </project>
