@@ -2,12 +2,11 @@ package de.gammas.kubeleader.spring.boot.autoconfiguration
 
 import de.gammas.kubeleader.core.KubeLeader
 import de.gammas.kubeleader.core.KubeLeaderConfig
-import de.gammas.kubeleader.spring.configure.KubeLeaderAspect
+import de.gammas.kubeleader.spring.boot.aspect.KubeLeaderAspect
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties
-import org.springframework.boot.task.TaskExecutorBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment

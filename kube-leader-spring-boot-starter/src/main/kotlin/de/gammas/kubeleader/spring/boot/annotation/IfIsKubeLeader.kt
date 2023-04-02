@@ -1,4 +1,4 @@
-package de.gammas.kubeleader.spring.annotation
+package de.gammas.kubeleader.spring.boot.annotation
 
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)

@@ -13,6 +13,7 @@
     <groupId>io.gammas</groupId>
     <artifactId>kube-leader-spring-boot-example</artifactId>
     <name>kube-leader-spring-boot-example</name>
+    <version>1.0-SNAPSHOT</version>
 
     <dependencies>
         <dependency>

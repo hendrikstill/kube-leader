@@ -1,6 +1,6 @@
 package org.example;
 
-import de.gammas.kubeleader.spring.annotation.IfIsKubeLeader;
+import de.gammas.kubeleader.spring.boot.annotation.IfIsKubeLeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,5 +15,6 @@ public class ScheduledTask {
     @IfIsKubeLeader
     public void doStuffEverySecond(){
         log.info("Hey I'm doing something");
+        throw new RuntimeException("Boom");
     }
 }

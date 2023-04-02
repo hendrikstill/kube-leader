@@ -1,4 +1,4 @@
-package de.gammas.kubeleader.spring.configure
+package de.gammas.kubeleader.spring.boot.aspect
 
 import de.gammas.kubeleader.core.KubeLeader
 import org.aspectj.lang.ProceedingJoinPoint
@@ -14,7 +14,7 @@ class KubeLeaderAspect(
 ) {
     private val log = LoggerFactory.getLogger(KubeLeaderAspect::class.java)
 
-    @Around("@annotation(de.gammas.kubeleader.spring.annotation.IfIsKubeLeader)")
+    @Around("@annotation(de.gammas.kubeleader.spring.boot.annotation.IfIsKubeLeader)")
     fun around(joinPoint: ProceedingJoinPoint){
         if (kubeLeader.isLeader()){
             log.debug("Process is leader so method is proceeded")
