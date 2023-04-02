@@ -24,7 +24,7 @@ class KubeLeader(
     fun run() {
         log.info("{} Starting KubeLeader",kubeLeaderConfig.identity)
 
-        val lock = EndpointsLock(kubeLeaderConfig.namespace,kubeLeaderConfig.identity, kubeLeaderConfig.identity)
+        val lock = EndpointsLock(kubeLeaderConfig.namespace,kubeLeaderConfig.lockName, kubeLeaderConfig.identity)
         val leaderElectionConfig =
             LeaderElectionConfig(lock, kubeLeaderConfig.leaseDuration, kubeLeaderConfig.renewDeadline, kubeLeaderConfig.retryPeriod)
 

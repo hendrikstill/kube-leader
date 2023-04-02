@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    de.gammas.kubeleader.spring.boot.autoconfiguration.KubeLeaderAutoConfiguration

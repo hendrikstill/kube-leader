@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: kube-leader-spring-boot-example
+
+logging:
+  level:
+    de:
+      gammas:
+        kubeleader: DEBUG
