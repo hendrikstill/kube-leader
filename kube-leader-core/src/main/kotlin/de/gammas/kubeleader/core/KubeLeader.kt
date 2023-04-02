@@ -3,38 +3,40 @@ package de.gammas.kubeleader.core
 import io.kubernetes.client.extended.leaderelection.LeaderElectionConfig
 import io.kubernetes.client.extended.leaderelection.LeaderElector
 import io.kubernetes.client.extended.leaderelection.resourcelock.EndpointsLock
+import io.kubernetes.client.openapi.ApiClient
 import io.kubernetes.client.openapi.Configuration
 import io.kubernetes.client.util.Config
 import org.slf4j.LoggerFactory
-import java.time.Duration
 import java.util.concurrent.atomic.AtomicBoolean
 
-class KubeLeader(private val identity: String) {
-    private val log = LoggerFactory.getLogger(KubeLeader::class.java)
+class KubeLeader(
+    private val client: ApiClient = Config.defaultClient(),
+    private val kubeLeaderConfig: KubeLeaderConfig
+) {
 
+    private val log = LoggerFactory.getLogger(KubeLeader::class.java)
     private val amILeader = AtomicBoolean(false)
 
-    fun run() {
-        log.info("{} Starting KubeLeader",identity)
-        val client = Config.defaultClient()
+    init {
         Configuration.setDefaultApiClient(client)
+    }
 
-        val lock = EndpointsLock("default", "my-app", identity)
+    fun run() {
+        log.info("{} Starting KubeLeader",kubeLeaderConfig.identity)
+
+        val lock = EndpointsLock(kubeLeaderConfig.namespace,kubeLeaderConfig.identity, kubeLeaderConfig.identity)
         val leaderElectionConfig =
-            LeaderElectionConfig(lock, Duration.ofMillis(10_000), Duration.ofMillis(8_000), Duration.ofMillis(2_000))
+            LeaderElectionConfig(lock, kubeLeaderConfig.leaseDuration, kubeLeaderConfig.renewDeadline, kubeLeaderConfig.retryPeriod)
 
         LeaderElector(leaderElectionConfig).use { leaderElector ->
             leaderElector.run(
                 {
-                    log.info("{} Start leading",identity)
+                    log.info("{} Start leading",kubeLeaderConfig.identity)
                     amILeader.set(true)
                 },
                 {
-                    log.info("{}  Stop leading",identity)
+                    log.info("{}  Stop leading",kubeLeaderConfig.identity)
                     amILeader.set(false)
-                },
-                {
-                    log.info("Some other got the lock")
                 })
         }
     }

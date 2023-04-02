@@ -12,8 +12,6 @@ import kotlin.test.assertEquals
 @TestInstance(PER_CLASS)
 class KubeLeaderTest {
 
-
-    private val log = LoggerFactory.getLogger(KubeLeaderTest::class.java)
     private val kubeLeaderThreadForCleanUp = mutableListOf<KubeLeaderThread>()
 
 
@@ -61,7 +59,8 @@ class KubeLeaderTest {
     }
 
     private fun startKubeLeaderAsync(identity: String): KubeLeaderThread {
-        val kubeLeader = KubeLeader(identity)
+        val kubeLeaderConfig = KubeLeaderConfig(lockName = "test-app",identity= identity);
+        val kubeLeader = KubeLeader(kubeLeaderConfig = kubeLeaderConfig)
         val thread = Thread(kubeLeader::run)
         val kubeLeaderThread =  KubeLeaderThread(kubeLeader, thread)
 
