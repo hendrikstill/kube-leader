@@ -12,6 +12,7 @@ target/
 *.iml
 *.ipr
 
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -36,3 +37,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Spring Boot ###
+application.yaml

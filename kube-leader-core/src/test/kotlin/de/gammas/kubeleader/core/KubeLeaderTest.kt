@@ -6,7 +6,6 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
-import org.slf4j.LoggerFactory
 import kotlin.test.assertEquals
 
 @TestInstance(PER_CLASS)
@@ -27,25 +26,25 @@ class KubeLeaderTest {
     @Test
     fun `assert that non leader will become leader when current leader is stopped `() {
         val currentLeaderThread = startKubeLeaderAsync("currentLeader")
-        await().timeout(TWO_MINUTES).until { currentLeaderThread.first.amILeader() }
+        await().timeout(TWO_MINUTES).until { currentLeaderThread.first.isLeader() }
 
 
         val nonLeaderThread = startKubeLeaderAsync("nonLeader")
         currentLeaderThread.second.interrupt()
-        await().timeout(TWO_MINUTES).until { nonLeaderThread.first.amILeader() }
-        assertEquals(true, nonLeaderThread.first.amILeader())
+        await().timeout(TWO_MINUTES).until { nonLeaderThread.first.isLeader() }
+        assertEquals(true, nonLeaderThread.first.isLeader())
     }
 
     @Test
     fun `assert that leader will become leader again when it is restarted`() {
         val leaderThread = startKubeLeaderAsync("leader")
-        await().timeout(TWO_MINUTES).until { leaderThread.first.amILeader() }
-        assertEquals(true, leaderThread.first.amILeader())
+        await().timeout(TWO_MINUTES).until { leaderThread.first.isLeader() }
+        assertEquals(true, leaderThread.first.isLeader())
         leaderThread.second.interrupt()
 
         val restartedLeaderThread = startKubeLeaderAsync("leader")
-        await().timeout(TWO_MINUTES).until { restartedLeaderThread.first.amILeader() }
-        assertEquals(true, restartedLeaderThread.first.amILeader())
+        await().timeout(TWO_MINUTES).until { restartedLeaderThread.first.isLeader() }
+        assertEquals(true, restartedLeaderThread.first.isLeader())
 
     }
 
@@ -69,7 +68,7 @@ class KubeLeaderTest {
 
         return kubeLeaderThread
     }
-    private fun List<KubeLeaderThread>.getLeaders() = this.filter { it.first.amILeader() }
+    private fun List<KubeLeaderThread>.getLeaders() = this.filter { it.first.isLeader() }
 }
 
 typealias KubeLeaderThread = Pair<KubeLeader, Thread>

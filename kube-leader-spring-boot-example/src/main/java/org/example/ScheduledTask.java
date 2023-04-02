@@ -14,7 +14,6 @@ public class ScheduledTask {
     @Scheduled(fixedRate = 1, timeUnit = TimeUnit.SECONDS)
     @IfIsKubeLeader
     public void doStuffEverySecond(){
-
         log.info("Hey I'm doing something");
     }
 }

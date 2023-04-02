@@ -16,7 +16,7 @@ class KubeLeaderAspect(
 
     @Around("@annotation(de.gammas.kubeleader.spring.annotation.IfIsKubeLeader)")
     fun around(joinPoint: ProceedingJoinPoint){
-        if (kubeLeader.amILeader()){
+        if (kubeLeader.isLeader()){
             log.debug("Process is leader so method is proceeded")
             joinPoint.proceed()
         } else {

@@ -15,14 +15,14 @@ class KubeLeader(
 ) {
 
     private val log = LoggerFactory.getLogger(KubeLeader::class.java)
-    private val amILeader = AtomicBoolean(false)
+    private val isLeader = AtomicBoolean(false)
 
     init {
         Configuration.setDefaultApiClient(client)
     }
 
     fun run() {
-        log.info("{} Starting KubeLeader",kubeLeaderConfig.identity)
+        log.info("Starting KubeLeader with configuration: {}",kubeLeaderConfig)
 
         val lock = EndpointsLock(kubeLeaderConfig.namespace,kubeLeaderConfig.lockName, kubeLeaderConfig.identity)
         val leaderElectionConfig =
@@ -31,16 +31,16 @@ class KubeLeader(
         LeaderElector(leaderElectionConfig).use { leaderElector ->
             leaderElector.run(
                 {
-                    log.info("{} Start leading",kubeLeaderConfig.identity)
-                    amILeader.set(true)
+                    log.debug("Getting Leadership for lock {} with identity {}",kubeLeaderConfig.lockName, kubeLeaderConfig.identity)
+                    isLeader.set(true)
                 },
                 {
-                    log.info("{}  Stop leading",kubeLeaderConfig.identity)
-                    amILeader.set(false)
+                    log.debug("Losing Leadership for lock {} with identity {}",kubeLeaderConfig.lockName, kubeLeaderConfig.identity)
+                    isLeader.set(false)
                 })
         }
     }
-    fun amILeader(): Boolean {
-        return amILeader.get()
+    fun isLeader(): Boolean {
+        return isLeader.get()
     }
 }
