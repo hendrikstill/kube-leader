@@ -2,7 +2,7 @@ package de.gammas.kubeleader.core
 
 import io.kubernetes.client.extended.leaderelection.LeaderElectionConfig
 import io.kubernetes.client.extended.leaderelection.LeaderElector
-import io.kubernetes.client.extended.leaderelection.resourcelock.EndpointsLock
+import io.kubernetes.client.extended.leaderelection.resourcelock.LeaseLock
 import io.kubernetes.client.openapi.ApiClient
 import io.kubernetes.client.openapi.Configuration
 import io.kubernetes.client.util.Config
@@ -24,7 +24,7 @@ class KubeLeader(
     fun run() {
         log.info("Starting KubeLeader with configuration: {}",kubeLeaderConfig)
 
-        val lock = EndpointsLock(kubeLeaderConfig.namespace,kubeLeaderConfig.lockName, kubeLeaderConfig.identity)
+        val lock = LeaseLock(kubeLeaderConfig.namespace,kubeLeaderConfig.lockName, kubeLeaderConfig.identity)
         val leaderElectionConfig =
             LeaderElectionConfig(lock, kubeLeaderConfig.leaseDuration, kubeLeaderConfig.renewDeadline, kubeLeaderConfig.retryPeriod)
 
