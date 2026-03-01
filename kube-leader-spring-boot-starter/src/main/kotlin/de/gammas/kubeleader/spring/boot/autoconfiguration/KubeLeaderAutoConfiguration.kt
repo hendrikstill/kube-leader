@@ -6,6 +6,7 @@ import de.gammas.kubeleader.spring.boot.aspect.KubeLeaderAspect
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -17,6 +18,7 @@ import java.time.Duration
 
 @Configuration
 @ConditionalOnClass(KubeLeader::class)
+@ConditionalOnProperty(prefix = "kubeleader", name = ["enabled"], havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(KubeLeaderProperties::class)
 @EnableAsync
 class KubeLeaderAutoConfiguration(
@@ -49,7 +51,6 @@ class KubeLeaderAutoConfiguration(
     @ConditionalOnMissingBean
     fun kubeLeaderAspect(kubeLeader: KubeLeader) = KubeLeaderAspect(kubeLeader)
 
-    //TODO Only Start directly when on K8S or explicitly enabled
     private fun getAppName() = environment.getProperty("spring.application.name") ?: "undefined"
     private fun getHostname() = InetAddress.getLocalHost().hostName
 

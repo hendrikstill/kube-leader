@@ -7,6 +7,7 @@ import java.time.Duration
 @ConfigurationProperties(prefix = "kubeleader")
 @ConstructorBinding
 data class KubeLeaderProperties(
+    val enabled: Boolean = true,
     val identity : String?,
     val lockName : String?,
     val namespace : String?,

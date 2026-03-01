@@ -15,6 +15,5 @@ public class ScheduledTask {
     @IfIsKubeLeader
     public void doStuffEverySecond(){
         log.info("Hey I'm doing something");
-        throw new RuntimeException("Boom");
     }
 }
